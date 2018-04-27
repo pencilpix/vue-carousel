@@ -463,6 +463,7 @@ export default {
      */
     /* istanbul ignore next */
     onStart(e) {
+      if (!process.client) return;
       document.addEventListener(
         this.isTouch ? "touchend" : "mouseup",
         this.onEnd,
@@ -490,6 +491,8 @@ export default {
       const eventPosX = this.isTouch ? e.changedTouches[0].clientX : e.clientX;
       const deltaX = this.dragStartX - eventPosX;
       this.dragMomentum = deltaX / (e.timeStamp - this.startTime);
+
+      if (!process.client) return;
 
       // take care of the minSwipteDistance prop, if not 0 and delta is bigger than delta
       if (
@@ -602,6 +605,8 @@ export default {
     }
   },
   mounted() {
+    if (!process.client) return;
+
     window.addEventListener(
       "resize",
       debounce(this.onResize, this.refreshRate)
@@ -625,6 +630,8 @@ export default {
     );
   },
   beforeDestroy() {
+    if (!process.client) return;
+
     this.detachMutationObserver();
     window.removeEventListener("resize", this.getBrowserWidth);
     this.$refs["VueCarousel-inner"].removeEventListener(
